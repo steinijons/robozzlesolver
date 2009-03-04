@@ -1,0 +1,289 @@
+<Configuration>
+  <SettingsComponent>
+    <string />
+    <integer>
+      <setting name="UsedSolutionBuilderID">0</setting>
+    </integer>
+    <boolean>
+      <setting name="livetemplates.csharp.usevar">False</setting>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:ProgramAction.cs" caret="29" scrollPosition="0|0" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:CellColor.cs" caret="29" scrollPosition="0|0" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Program.cs" caret="100" scrollPosition="0|0" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="2102" scrollPosition="0|0" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml.cs" caret="5792" scrollPosition="0|191" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="390" scrollPosition="0|0" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="4765" scrollPosition="0|170" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="513" scrollPosition="0|3" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="245" scrollPosition="0|3" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="601" scrollPosition="0|21" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="880" scrollPosition="0|21" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="1005" scrollPosition="0|52" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="1493" scrollPosition="0|69" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="2310" scrollPosition="0|98" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="2555" scrollPosition="0|98" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="2927" scrollPosition="0|114" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="5354" scrollPosition="0|169" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="4552" scrollPosition="0|169" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="6032" scrollPosition="0|212" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml.cs" caret="1983" scrollPosition="0|45" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="4679" scrollPosition="0|40" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml.cs" caret="4621" scrollPosition="0|119" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml.cs" caret="3922" scrollPosition="0|119" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml.cs" caret="4087" scrollPosition="0|119" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="1643" scrollPosition="0|0" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml.cs" caret="694" scrollPosition="0|5" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml.cs" caret="887" scrollPosition="0|10" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml.cs" caret="1195" scrollPosition="0|17" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml.cs" caret="5792" scrollPosition="0|191" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="390" scrollPosition="0|0" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="1" scrollPosition="0|0" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="923" scrollPosition="0|15" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="3661" scrollPosition="0|36" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="3362" scrollPosition="0|34" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="2324" scrollPosition="0|27" />
+      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="3812" scrollPosition="0|37" />
+    </RecentEdits>
+  </RecentFiles>
+  <UnitTestRunner>
+    <CustomStartDirectory>
+    </CustomStartDirectory>
+    <UseShadowCopy>True</UseShadowCopy>
+    <UseCustomFolder>False</UseCustomFolder>
+    <EnableUnitTesting>True</EnableUnitTesting>
+    <Providers />
+  </UnitTestRunner>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Qualified:@System.Windows.MessageBox">
+      <Item value="Show" priority="3" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:RoboZZle.ProgramState">
+      <Item value="X" priority="2" />
+      <Item value="Dir" priority="1" />
+      <Item value="Y" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Default">
+      <Item value="state" priority="1" />
+      <Item value="stateToPass" priority="0" />
+      <Item value="void" priority="3" />
+      <Item value="MessageBox" priority="2" />
+      <Item value="Length" priority="3" />
+      <Item value="string" priority="1" />
+      <Item value="lines" priority="1" />
+      <Item value="return" priority="6" />
+      <Item value="Int32" priority="1" />
+      <Item value="bool" priority="3" />
+      <Item value="widthAndHeight" priority="0" />
+      <Item value="if" priority="3" />
+      <Item value="parseResult" priority="0" />
+      <Item value="for" priority="4" />
+      <Item value="CellColor" priority="8" />
+      <Item value="CaseInsensitiveComparer" priority="0" />
+      <Item value="switch" priority="0" />
+      <Item value="color" priority="1" />
+      <Item value="cellColor" priority="1" />
+      <Item value="CellColor.Red" priority="0" />
+      <Item value="this" priority="18" />
+      <Item value="x" priority="10" />
+      <Item value="int" priority="2" />
+      <Item value="Button" priority="7" />
+      <Item value="in" priority="0" />
+      <Item value="button" priority="12" />
+      <Item value="Brushes" priority="5" />
+      <Item value="i" priority="2" />
+      <Item value="CellColor.None" priority="3" />
+      <Item value="OpenFileDialog" priority="0" />
+      <Item value="dialog" priority="1" />
+      <Item value="LoadDescription" priority="0" />
+      <Item value="foreach" priority="2" />
+      <Item value="Debug" priority="3" />
+      <Item value="case" priority="1" />
+      <Item value="private" priority="0" />
+      <Item value="isStar" priority="1" />
+      <Item value="String" priority="1" />
+      <Item value="SetColor" priority="0" />
+      <Item value="SetStar" priority="1" />
+      <Item value="false" priority="5" />
+      <Item value="ProgramSlot" priority="3" />
+      <Item value="code" priority="2" />
+      <Item value="ProgramAction.Forward" priority="3" />
+      <Item value="CellColor.Blue" priority="0" />
+      <Item value="Program" priority="0" />
+      <Item value="forwardInstructionFound" priority="1" />
+      <Item value="RectangleGeometry" priority="0" />
+      <Item value="GeometryDrawing" priority="0" />
+      <Item value="GeometryGroup" priority="0" />
+      <Item value="PathGeometry" priority="0" />
+      <Item value="triGeometry" priority="0" />
+      <Item value="PathFigure" priority="2" />
+      <Item value="PathSegment" priority="1" />
+      <Item value="PolyLineSegment" priority="0" />
+      <Item value="Point" priority="1" />
+      <Item value="triFigure" priority="0" />
+      <Item value="Pen" priority="0" />
+      <Item value="Path" priority="3" />
+      <Item value="path" priority="1" />
+      <Item value="RotateTransform" priority="1" />
+      <Item value="break" priority="0" />
+      <Item value="double" priority="0" />
+      <Item value="rotation" priority="0" />
+      <Item value="new" priority="0" />
+      <Item value="oldX" priority="1" />
+      <Item value="oldY" priority="1" />
+      <Item value="oldPlayerButton" priority="0" />
+      <Item value="null" priority="0" />
+      <Item value="SetDirection" priority="0" />
+      <Item value="puzzle" priority="0" />
+      <Item value="else" priority="0" />
+      <Item value="EllipseGeometry" priority="0" />
+      <Item value="playerX" priority="0" />
+      <Item value="HorizontalAlignment.Stretch" priority="0" />
+      <Item value="Canvas" priority="2" />
+      <Item value="Polygon" priority="3" />
+      <Item value="canvas" priority="2" />
+      <Item value="SetStartPosition" priority="0" />
+      <Item value="SetStartDirection" priority="0" />
+      <Item value="funcCode" priority="0" />
+      <Item value="depth" priority="0" />
+      <Item value="action" priority="0" />
+      <Item value="continue" priority="0" />
+      <Item value="programCode" priority="0" />
+      <Item value="generatedCode" priority="0" />
+      <Item value="ProgramAction.F1" priority="0" />
+      <Item value="slot" priority="6" />
+      <Item value="ProgramAction.F2" priority="0" />
+      <Item value="ProgramAction" priority="2" />
+      <Item value="ProgramAction.Left" priority="0" />
+      <Item value="ProgramAction.Right" priority="0" />
+      <Item value="width" priority="0" />
+      <Item value="height" priority="0" />
+      <Item value="Brush" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.IO.File">
+      <Item value="Exists" priority="0" />
+      <Item value="ReadAllLines" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.String">
+      <Item value="Split" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Int32">
+      <Item value="TryParse" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@RoboZZle.CellColor">
+      <Item value="None" priority="0" />
+      <Item value="Red" priority="0" />
+      <Item value="Green" priority="0" />
+      <Item value="Blue" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:RoboZZle.MainWindow">
+      <Item value="puzzle" priority="9" />
+      <Item value="fieldGrid" priority="2" />
+      <Item value="Reset" priority="1" />
+      <Item value="resetButton" priority="1" />
+      <Item value="loadButton" priority="1" />
+      <Item value="playerTriangle" priority="0" />
+      <Item value="FindResource" priority="3" />
+      <Item value="FindButtonForCoords" priority="1" />
+      <Item value="SetStartPosition" priority="0" />
+      <Item value="SetDirection" priority="0" />
+      <Item value="redBrush" priority="2" />
+      <Item value="noColorBrush" priority="0" />
+      <Item value="blueBrush" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:RoboZZle.Puzzle">
+      <Item value="SetColor" priority="2" />
+      <Item value="SetStar" priority="2" />
+      <Item value="width" priority="0" />
+      <Item value="height" priority="0" />
+      <Item value="colors" priority="0" />
+      <Item value="startX" priority="0" />
+      <Item value="startY" priority="0" />
+      <Item value="CanBeSolvedWith" priority="0" />
+      <Item value="GetStartPosition" priority="1" />
+      <Item value="GetStartDirection" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Controls.Primitives.UniformGrid">
+      <Item value="Children" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Controls.Button">
+      <Item value="Background" priority="0" />
+      <Item value="Content" priority="6" />
+      <Item value="Name" priority="0" />
+      <Item value="IsEnabled" priority="3" />
+      <Item value="HorizontalContentAlignment" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Windows.Media.Brushes">
+      <Item value="Gray" priority="1" />
+      <Item value="Yellow" priority="1" />
+      <Item value="Black" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.String">
+      <Item value="Empty" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Microsoft.Win32.OpenFileDialog">
+      <Item value="ShowDialog" priority="0" />
+      <Item value="FileName" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Diagnostics.Debug">
+      <Item value="Assert" priority="3" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:RoboZZle.ProgramSlot">
+      <Item value="Action" priority="11" />
+      <Item value="Color" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Media.GeometryDrawing">
+      <Item value="Geometry" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Media.PathGeometry">
+      <Item value="Figures" priority="0" />
+      <Item value="Transform" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Media.PathFigureCollection">
+      <Item value="Add" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Media.PathFigure">
+      <Item value="Segments" priority="0" />
+      <Item value="StartPoint" priority="0" />
+      <Item value="IsClosed" priority="0" />
+      <Item value="IsFilled" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Media.PathSegmentCollection">
+      <Item value="Add" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Shapes.Path">
+      <Item value="Data" priority="1" />
+      <Item value="Fill" priority="0" />
+      <Item value="Stroke" priority="0" />
+      <Item value="StrokeThickness" priority="0" />
+      <Item value="RenderTransform" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Math">
+      <Item value="PI" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Media.Geometry">
+      <Item value="Transform" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Controls.Canvas">
+      <Item value="Children" priority="1" />
+      <Item value="Width" priority="0" />
+      <Item value="Height" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Windows.Controls.UIElementCollection">
+      <Item value="Add" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@RoboZZle.ProgramAction">
+      <Item value="F3" priority="0" />
+      <Item value="F4" priority="0" />
+      <Item value="F5" priority="0" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+</Configuration>
