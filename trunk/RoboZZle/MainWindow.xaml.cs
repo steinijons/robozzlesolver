@@ -14,20 +14,28 @@ namespace RoboZZle
 {
 	public partial class MainWindow
 	{
+		private const int FieldSideSize = 18;
+
 		private Puzzle puzzle;
 
 		private ButtonAction lastAction = ButtonAction.None;
 
-		private readonly BackgroundWorker backgroundWorker = new BackgroundWorker();
+		private BackgroundWorker backgroundWorker;
 
-		private Brush redBrush, greenBrush, blueBrush, noColorBrush;
+		private Brush redBrush;
 
-		const int FieldSideSize = 18;
+		private Brush greenBrush;
+
+		private Brush blueBrush;
+
+		private Brush noColorBrush;
+
+		private bool isSolvingNow;
 
 		public MainWindow()
 		{
 			this.InitializeComponent();
-			this.InitializeBackgroundWorker();
+			this.LoadBackgroundWorker();
 			this.LoadBrushes();
 			this.CreateFieldAndPuzzle();
 		}
@@ -42,13 +50,9 @@ namespace RoboZZle
 			this.noColorBrush = (Brush)this.FindResource("NoColor");
 		}
 
-		private void InitializeBackgroundWorker()
+		private void LoadBackgroundWorker()
 		{
-			this.backgroundWorker.WorkerReportsProgress = true;
-			this.backgroundWorker.WorkerSupportsCancellation = true;
-			this.backgroundWorker.ProgressChanged += this.worker_ProgressChanged;
-			this.backgroundWorker.RunWorkerCompleted += this.worker_RunWorkerCompleted;
-			this.backgroundWorker.DoWork += this.worker_DoWork;
+			this.backgroundWorker = (BackgroundWorker) this.FindResource("BackgroundWorker");
 		}
 
 		private void CreateFieldAndPuzzle()
@@ -238,7 +242,7 @@ namespace RoboZZle
 		{
 			if (e.OldPosition == e.NewPosition)
 				return;
-			
+
 			if (e.OldPosition.X != -1 && e.OldPosition.Y != -1)
 			{
 				Button oldPlayerButton = this.FindButtonForCoords(e.OldPosition);
@@ -255,7 +259,7 @@ namespace RoboZZle
 		{
 			if (e.OldStarState == e.NewStarState)
 				return;
-			
+
 			Button button = this.FindButtonForCoords(e.Coord);
 			bool isStar = this.puzzle.GetStar(e.Coord);
 
@@ -323,16 +327,25 @@ namespace RoboZZle
 
 		private void turnLeftButton_Click(object sender, RoutedEventArgs e)
 		{
+			if (this.isSolvingNow)
+				return;
+
 			this.puzzle.StartDirection = (this.puzzle.StartDirection + 3) % 4;
 		}
 
 		private void rightButton_Click(object sender, RoutedEventArgs e)
 		{
+			if (this.isSolvingNow)
+				return;
+			
 			this.puzzle.StartDirection = (this.puzzle.StartDirection + 1) % 4;
 		}
 
 		private void fieldButton_Click(object sender, RoutedEventArgs e)
 		{
+			if (this.isSolvingNow)
+				return;
+			
 			Button button = e.Source as Button;
 			Debug.Assert(button != null);
 			string[] coordsAsString = button.Name.Substring(6).Split('_');
@@ -387,7 +400,7 @@ namespace RoboZZle
 				return;
 			}
 
-            int redCount, greenCount, blueCount;
+			int redCount, greenCount, blueCount;
 			this.puzzle.GetColorsCount(out redCount, out greenCount, out blueCount);
 			bool useRed = redCount > 0, useGreen = greenCount > 0, useBlue = blueCount > 0;
 			if ((redCount == 0 && greenCount == 0) || (redCount == 0 && blueCount == 0) || (greenCount == 0 && blueCount == 0))
@@ -407,6 +420,7 @@ namespace RoboZZle
 			this.resetButton.IsEnabled = false;
 			this.loadButton.IsEnabled = false;
 			this.cancelButton.IsEnabled = true;
+			this.isSolvingNow = true;
 
 			List<int> slotSizes = new List<int> { n1, n2, n3, n4, n5 };
 			slotSizes.RemoveAll(size => size == 0);
@@ -481,6 +495,7 @@ namespace RoboZZle
 			this.resetButton.IsEnabled = true;
 			this.loadButton.IsEnabled = true;
 			this.cancelButton.IsEnabled = false;
+			this.isSolvingNow = false;
 		}
 
 		private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
