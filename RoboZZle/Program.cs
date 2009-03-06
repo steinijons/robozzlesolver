@@ -36,7 +36,7 @@ namespace RoboZZle
 				}
 
 				if (i != programCode.Length - 1)
-					result += " |  ";
+					result += Environment.NewLine;
 			}
 
 			return result;
