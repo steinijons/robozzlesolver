@@ -1,0 +1,14 @@
+using System;
+
+namespace RoboZZle
+{
+	internal class PuzzleFieldChangedEventArgs : EventArgs
+	{
+		public Coord Coord { get; private set; }
+
+		public PuzzleFieldChangedEventArgs(Coord coord)
+		{
+			this.Coord = coord;
+		}
+	}
+}

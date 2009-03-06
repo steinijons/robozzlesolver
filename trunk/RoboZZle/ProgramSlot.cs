@@ -4,6 +4,6 @@ namespace RoboZZle
 	{
 		public ProgramAction Action { get; set; }
 
-		public CellColor Color { get; set; }
+		public FieldColor Color { get; set; }
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System;
 
 namespace RoboZZle
 {
@@ -13,15 +14,13 @@ namespace RoboZZle
 
 		private readonly int height;
 
-		private readonly CellColor[,] colors;
+		private readonly FieldColor[,] colors;
 
 		private readonly bool[,] stars;
 
 		private int starsCount;
 
-		private int startX = -1;
-
-		private int startY = -1;
+		private Coord startPos = new Coord(-1, -1);
 
 		private int startDir = -1;
 
@@ -31,74 +30,121 @@ namespace RoboZZle
 
 			this.width = width;
 			this.height = height;
-			this.colors = new CellColor[width, height];
+			this.colors = new FieldColor[width, height];
 			this.stars = new bool[width, height];
 		}
 
-		public void SetStar(int x, int y, bool isStar)
+		public event EventHandler<StartPositionChangedEventArgs> StartPositionChanged;
+
+		public event EventHandler<StartDirectionChangedEventArgs> StartDirectionChanged;
+
+		public event EventHandler<FieldColorChangedEventArgs> FieldColorChanged;
+
+		public event EventHandler<FieldStarStateChangedEventArgs> FieldStarStateChanged;
+
+		public Coord StartPosition
 		{
-			if (stars[x, y])
+			get { return this.startPos; }
+			set
+			{
+				Coord oldPos = this.startPos;
+				this.startPos = value;
+
+				EventHandler<StartPositionChangedEventArgs> handler = this.StartPositionChanged;
+				if (handler != null)
+					handler(this, new StartPositionChangedEventArgs(oldPos, value));
+			}
+		}
+
+		public int StartDirection
+		{
+			get { return this.startDir; }
+			set
+			{
+				int oldDir = this.startDir;
+				this.startDir = value;
+
+				EventHandler<StartDirectionChangedEventArgs> handler = this.StartDirectionChanged;
+				if (handler != null)
+					handler(this, new StartDirectionChangedEventArgs(oldDir, value));
+			}
+		}
+
+		public bool GetStar(Coord coord)
+		{
+			return this.stars[coord.X, coord.Y];
+		}
+
+		public void SetStar(Coord coord, bool isStar)
+		{
+			bool oldStarState = stars[coord.X, coord.Y];
+
+			if (stars[coord.X, coord.Y])
 				starsCount -= 1;
 
-			stars[x, y] = isStar;
+			stars[coord.X, coord.Y] = isStar;
 
-			if (stars[x, y])
+			if (stars[coord.X, coord.Y])
 				starsCount += 1;
+
+			EventHandler<FieldStarStateChangedEventArgs> handler = this.FieldStarStateChanged;
+			if (handler != null)
+				handler(this, new FieldStarStateChangedEventArgs(oldStarState, isStar, coord));
 		}
 
-		public bool GetStar(int x, int y)
+		public FieldColor GetColor(Coord coord)
 		{
-			return stars[x, y];
+			return this.colors[coord.X, coord.Y];
 		}
 
-		public void SetColor(int x, int y, CellColor color)
+		public void SetColor(Coord coord, FieldColor color)
 		{
-			colors[x, y] = color;
+			FieldColor oldColor = colors[coord.X, coord.Y];
+			colors[coord.X, coord.Y] = color;
+
+			EventHandler<FieldColorChangedEventArgs> handler = this.FieldColorChanged;
+			if (handler != null)
+				handler(this, new FieldColorChangedEventArgs(oldColor, color, coord));
 		}
 
-		public void SetStartPosition(int x, int y)
+		public void Reset()
 		{
-			this.startX = x;
-			this.startY = y;
-		}
+			for (int x = 0; x < this.width; ++x)
+				for (int y = 0; y < this.height; ++y)
+				{
+					Coord coord = new Coord(x, y);
+					this.SetColor(coord, FieldColor.None);
+					this.SetStar(coord, false);
+				}
 
-		public void GetStartPosition(out int x, out int y)
-		{
-			x = this.startX;
-			y = this.startY;
-		}
-
-		public void SetStartDirection(int dir)
-		{
-			this.startDir = dir;
-		}
-
-		public int GetStartDirection()
-		{
-			return this.startDir;
+			this.StartPosition = Coord.Zero;
+			this.StartDirection = 1;
 		}
 
 		public bool IsInValidConfiguration()
 		{
-			return this.starsCount > 0 && this.startX >= 0 && this.startY >= 0 && this.startDir >= 0 &&
-				   this.colors[this.startX, this.startY] != CellColor.None;
+			return
+				this.starsCount > 0 &&
+				this.startPos.X >= 0 && this.startPos.Y >= 0 && this.startPos.X < this.width && this.startPos.Y < this.height &&
+				this.startDir >= 0 && this.startDir <= 3 &&
+				this.colors[this.startPos.X, this.startPos.Y] != FieldColor.None;
 		}
 
 		public void GetColorsCount(out int red, out int green, out int blue)
 		{
 			red = green = blue = 0;
 
-			foreach (CellColor color in colors)
+			foreach (FieldColor color in colors)
 			{
 				switch (color)
 				{
-					case CellColor.Red:
+					case FieldColor.Red:
 						++red;
 						break;
-					case CellColor.Green:
+					case FieldColor.Green:
 						++green;
 						break;
-					case CellColor.Blue:
+					case FieldColor.Blue:
 						++blue;
 						break;
 				}
@@ -107,10 +153,21 @@ namespace RoboZZle
 
 		public bool CanBeSolvedWith(Program program)
 		{
+			Debug.Assert(this.IsInValidConfiguration());
+
 			HashSet<ProgramState> stateSet = new HashSet<ProgramState>();
-			ProgramState state = new ProgramState { X = this.startX, Y = this.startY, Dir = this.startDir, Func = 0, Instruction = 0 };
+			ProgramState state = new ProgramState { Position = this.startPos, Dir = this.startDir, Func = 0, Instruction = 0 };
 			bool[,] eatenStarsMask = new bool[this.width, this.height];
 			int starsEaten = 0;
+
+			// Check if we are staying on star
+			if (this.stars[startPos.X, startPos.Y])
+			{
+				starsEaten = 1;
+				eatenStarsMask[startPos.X, startPos.Y] = true;
+				if (this.starsCount == 1)
+					return true;
+			}
 
 			return CanBeSolvedWithDfs(stateSet, eatenStarsMask, ref state, ref starsEaten, program) == ExecutionResult.StarsEaten;
 		}
@@ -130,11 +187,11 @@ namespace RoboZZle
 					return ExecutionResult.Fail;
 				stateSet.Add(state);
 
-				CellColor currentColor = this.colors[state.X, state.Y];
+				FieldColor currentColor = this.colors[state.Position.X, state.Position.Y];
 				ProgramSlot slot = program.GetProgramSlot(state.Func, state.Instruction);
 				if (slot.Action == ProgramAction.None)
 					continue;
-				if (slot.Color != CellColor.None && slot.Color != currentColor)
+				if (slot.Color != FieldColor.None && slot.Color != currentColor)
 					continue;
 
 				//MessageBox.Show(string.Format("({0},{1}), dir={2}", state.X, state.Y, state.Dir));
@@ -150,21 +207,26 @@ namespace RoboZZle
 							state.Dir = (state.Dir + 1) % 4;
 							break;
 						case ProgramAction.Forward:
-							state.X += shiftX[state.Dir];
-							state.Y += shiftY[state.Dir];
+							Coord newPosition = state.Position;
+							newPosition.X += shiftX[state.Dir];
+							newPosition.Y += shiftY[state.Dir];
+							state.Position = newPosition;
 
-							if (state.X < 0 || state.Y < 0 || state.X >= this.width || state.Y >= this.height)
+							if (state.Position.X < 0 || state.Position.Y < 0 ||
+								state.Position.X >= this.width || state.Position.Y >= this.height)
 								return ExecutionResult.Fail;
-							if (colors[state.X, state.Y] == CellColor.None)
+							if (colors[state.Position.X, state.Position.Y] == FieldColor.None)
 								return ExecutionResult.Fail;
 
-							if (this.stars[state.X, state.Y] && !eatenStarsMask[state.X, state.Y])
+							// If star was eaten after this turn
+							if (this.stars[state.Position.X, state.Position.Y] && !eatenStarsMask[state.Position.X, state.Position.Y])
 							{
-								eatenStarsMask[state.X, state.Y] = true;
+								eatenStarsMask[state.Position.X, state.Position.Y] = true;
 								starsEaten += 1;
 								if (starsEaten == this.starsCount)
 									return ExecutionResult.StarsEaten;
 							}
+
 							break;
 					}
 				}
@@ -195,8 +257,7 @@ namespace RoboZZle
 					}
 
 					ExecutionResult result = CanBeSolvedWithDfs(stateSet, eatenStarsMask, ref stateToPass, ref starsEaten, program);
-					state.X = stateToPass.X;
-					state.Y = stateToPass.Y;
+					state.Position = stateToPass.Position;
 					state.Dir = stateToPass.Dir;
 					if (result != ExecutionResult.StillWorking)
 						return result;
@@ -213,9 +274,7 @@ namespace RoboZZle
 
 		struct ProgramState
 		{
-			public int X { get; set; }
-
-			public int Y { get; set; }
+			public Coord Position { get; set; }
 
 			public int Dir { get; set; }
 
@@ -230,14 +289,14 @@ namespace RoboZZle
 
 				ProgramState objCasted = (ProgramState)obj;
 				return
-					this.X == objCasted.X && this.Y == objCasted.Y &&
+					this.Position == objCasted.Position &&
 					this.Dir == objCasted.Dir && this.Func == objCasted.Func &&
 					this.Instruction == objCasted.Instruction;
 			}
 
 			public override int GetHashCode()
 			{
-				return this.X ^ this.Y ^ this.Dir ^ this.Func ^ this.Instruction;
+				return this.Position.GetHashCode() ^ this.Dir ^ this.Func ^ this.Instruction;
 			}
 		}
 	}

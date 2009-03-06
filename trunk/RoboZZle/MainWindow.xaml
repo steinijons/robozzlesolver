@@ -12,6 +12,9 @@
         <Canvas x:Shared="false" x:Key="PlayerTriangleHolder" Width="10" Height="10">
             <StaticResource ResourceKey="PlayerTriangle"/>
         </Canvas>
+        <Button x:Shared="false" x:Key="FieldButton">
+            <Grid/>
+        </Button>
     </Window.Resources>
     <Grid>
         <UniformGrid Margin="12,42.5,0,53.5" Name="fieldGrid" HorizontalAlignment="Left" Width="415" />

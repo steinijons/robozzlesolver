@@ -68,7 +68,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ButtonAction.cs" />
     <Compile Include="CellColor.cs" />
+    <Compile Include="CellColorStateChangedEventArgs.cs" />
+    <Compile Include="CellStarStateChangedEventArgs.cs" />
+    <Compile Include="Coord.cs" />
+    <Compile Include="StartDirectionChangedEventArgs.cs" />
+    <Compile Include="StartPositionChangedEventArgs.cs" />
+    <Compile Include="PuzzleFieldChangedEventArgs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgramAction.cs" />
     <Compile Include="ProgramSlot.cs" />
