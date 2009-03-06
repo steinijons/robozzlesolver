@@ -163,10 +163,10 @@ namespace RoboZZle
 			// Check if we are staying on star
 			if (this.stars[startPos.X, startPos.Y])
 			{
-				starsEaten = 1;
-				eatenStarsMask[startPos.X, startPos.Y] = true;
-				if (this.starsCount == 1)
-					return true;
+			    starsEaten = 1;
+			    eatenStarsMask[startPos.X, startPos.Y] = true;
+			    if (this.starsCount == 1)
+			        return true;
 			}
 
 			return CanBeSolvedWithDfs(stateSet, eatenStarsMask, ref state, ref starsEaten, program) == ExecutionResult.StarsEaten;
@@ -193,8 +193,6 @@ namespace RoboZZle
 					continue;
 				if (slot.Color != FieldColor.None && slot.Color != currentColor)
 					continue;
-
-				//MessageBox.Show(string.Format("({0},{1}), dir={2}", state.X, state.Y, state.Dir));
 
 				if (slot.Action == ProgramAction.Forward || slot.Action == ProgramAction.Left || slot.Action == ProgramAction.Right)
 				{
@@ -289,14 +287,16 @@ namespace RoboZZle
 
 				ProgramState objCasted = (ProgramState)obj;
 				return
-					this.Position == objCasted.Position &&
+					//this.Position == objCasted.Position &&
+					this.Position.X == objCasted.Position.X &&
+					this.Position.Y == objCasted.Position.Y &&
 					this.Dir == objCasted.Dir && this.Func == objCasted.Func &&
 					this.Instruction == objCasted.Instruction;
 			}
 
 			public override int GetHashCode()
 			{
-				return this.Position.GetHashCode() ^ this.Dir ^ this.Func ^ this.Instruction;
+				return this.Position.X ^ this.Position.Y ^ this.Dir ^ this.Func ^ this.Instruction;
 			}
 		}
 	}

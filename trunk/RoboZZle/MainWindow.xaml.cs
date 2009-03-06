@@ -81,21 +81,21 @@ namespace RoboZZle
 		{
 			if (!File.Exists(fileName))
 			{
-				MessageBox.Show(string.Format("File not found: '{0}'", fileName), "Error!");
+				MessageBox.Show(string.Format("File not found: '{0}'", fileName), "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 
 			string[] lines = File.ReadAllLines(fileName);
 			if (lines.Length == 0)
 			{
-				MessageBox.Show("Given file does not contain any data.", "Error!");
+				MessageBox.Show("Given file does not contain any data.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 
 			string[] widthAndHeight = lines[0].Split();
 			if (widthAndHeight.Length != 2)
 			{
-				MessageBox.Show("Given file does not contain any data.", "Error!");
+				MessageBox.Show("Given file does not contain any data.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 
@@ -105,13 +105,13 @@ namespace RoboZZle
 			parseResult &= Int32.TryParse(widthAndHeight[1], out width);
 			if (!parseResult || width <= 0 || height <= 0)
 			{
-				MessageBox.Show("Field size values are not correct.", "Error!");
+				MessageBox.Show("Field size values are not correct.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 
 			if (lines.Length != height + 1)
 			{
-				MessageBox.Show("Incorrect line count in input file.", "Error!");
+				MessageBox.Show("Incorrect line count in input file.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 
@@ -121,7 +121,7 @@ namespace RoboZZle
 			{
 				if (lines[y + 1].Length != width)
 				{
-					MessageBox.Show("Incorrect line count in input file.", "Error!");
+					MessageBox.Show("Incorrect line count in input file.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 					return;
 				}
 
@@ -377,21 +377,31 @@ namespace RoboZZle
 			parseResult &= Int32.TryParse(this.func5Slots.Text, out n5);
 			if (!parseResult || n1 < 1 || n2 < 0 || n3 < 0 || n4 < 0 || n5 < 0)
 			{
-				MessageBox.Show("Given function slot descriptions are not correct.", "Error!");
+				MessageBox.Show("Given function slot descriptions are not correct.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 
 			if (!this.puzzle.IsInValidConfiguration())
 			{
-				MessageBox.Show("Puzzle configuration is not yet valid.", "Error!");
+				MessageBox.Show("Puzzle configuration is not yet valid.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 				return;
 			}
 
-			int redCount, greenCount, blueCount;
+            int redCount, greenCount, blueCount;
 			this.puzzle.GetColorsCount(out redCount, out greenCount, out blueCount);
 			bool useRed = redCount > 0, useGreen = greenCount > 0, useBlue = blueCount > 0;
 			if ((redCount == 0 && greenCount == 0) || (redCount == 0 && blueCount == 0) || (greenCount == 0 && blueCount == 0))
 				useRed = useGreen = useBlue = false;
+
+			int funcCount = (n1 > 0 ? 1 : 0) + (n2 > 0 ? 1 : 0) + (n3 > 0 ? 1 : 0) + (n4 > 0 ? 1 : 0) + (n5 > 0 ? 1 : 0);
+			int slotsCount = n1 + n2 + n3 + n4 + n5;
+			int colorsCount = 1 + (useRed ? 1 : 0) + (useGreen ? 1 : 0) + (useBlue ? 1 : 0);
+			if (Math.Pow((3 + funcCount) * colorsCount, slotsCount) > 500000000)
+				MessageBox.Show(
+					"Note that solving puzzle with that configuration can take a lot of time.",
+					"Warning!",
+					MessageBoxButton.OK,
+					MessageBoxImage.Warning);
 
 			this.solveButton.IsEnabled = false;
 			this.resetButton.IsEnabled = false;
@@ -425,6 +435,7 @@ namespace RoboZZle
 		#endregion
 
 		#region Background worker
+
 		private void worker_DoWork(object sender, DoWorkEventArgs e)
 		{
 			ArrayList parameters = e.Argument as ArrayList;
@@ -460,11 +471,11 @@ namespace RoboZZle
 		private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			if (e.Cancelled)
-				MessageBox.Show("No solution found because you have stopped solver.", "No solution found!");
+				MessageBox.Show("No solution found because you have stopped solver.", "No solution found!", MessageBoxButton.OK, MessageBoxImage.Information);
 			else if (e.Result == null)
-				MessageBox.Show("Unfortunately solver could not find any solutions.", "No solution found!");
+				MessageBox.Show("Unfortunately solver could not find any solutions.", "No solution found!", MessageBoxButton.OK, MessageBoxImage.Information);
 			else
-				MessageBox.Show(e.Result.ToString(), "Solution found!");
+				MessageBox.Show(e.Result.ToString(), "Solution found!", MessageBoxButton.OK, MessageBoxImage.Information);
 
 			this.solveButton.IsEnabled = true;
 			this.resetButton.IsEnabled = true;
