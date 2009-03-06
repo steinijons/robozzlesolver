@@ -30,7 +30,7 @@ namespace RoboZZle
 					if (programCode[i][j].Action == ProgramAction.None)
 						break;
 					result += programCode[i][j].Action;
-					if (programCode[i][j].Color != CellColor.None)
+					if (programCode[i][j].Color != FieldColor.None)
 						result += string.Format("({0})", programCode[i][j].Color);
 					result += " ";
 				}
@@ -57,10 +57,10 @@ namespace RoboZZle
 		{
 			Debug.Assert(funcSlotCount.Count <= 5 && !funcSlotCount.Contains(0));
 
-			List<CellColor> availableColors = new List<CellColor> { CellColor.None };
-			if (useRed) availableColors.Add(CellColor.Red);
-			if (useGreen) availableColors.Add(CellColor.Green);
-			if (useBlue) availableColors.Add(CellColor.Blue);
+			List<FieldColor> availableColors = new List<FieldColor> { FieldColor.None };
+			if (useRed) availableColors.Add(FieldColor.Red);
+			if (useGreen) availableColors.Add(FieldColor.Green);
+			if (useBlue) availableColors.Add(FieldColor.Blue);
 
 			List<ProgramAction> availableActions =
 				new List<ProgramAction> { ProgramAction.Forward, ProgramAction.Left, ProgramAction.Right };
@@ -80,7 +80,7 @@ namespace RoboZZle
 		#region Code generation
 
 		private static bool GenerateProgramsDfs(
-			IEnumerable<CellColor> colors,
+			IEnumerable<FieldColor> colors,
 			IEnumerable<ProgramAction> actions,
 			int func,
 			ProgramSlot[][] generatedCode,
@@ -106,14 +106,14 @@ namespace RoboZZle
 
 		private static bool GenerateFuncCodeDfs(
 			int funcIndex,
-			IEnumerable<CellColor> colors,
+			IEnumerable<FieldColor> colors,
 			IEnumerable<ProgramAction> actions,
 			int depth,
 			ProgramSlot[] funcCode,
 			Predicate<ProgramSlot[]> funcCodePredicate)
 		{
 			foreach (ProgramAction action in actions)
-				foreach (CellColor color in colors)
+				foreach (FieldColor color in colors)
 				{
 					if (SkipDueToOptimizations(funcCode, funcIndex, depth, action, color))
 						continue;
@@ -131,7 +131,7 @@ namespace RoboZZle
 					}
 
 					funcCode[depth].Action = ProgramAction.None;
-					funcCode[depth].Color = CellColor.None;
+					funcCode[depth].Color = FieldColor.None;
 				}
 
 			return false;
@@ -141,7 +141,7 @@ namespace RoboZZle
 
 		#region Code checking
 
-		private static bool SkipDueToOptimizations(ProgramSlot[] code, int funcIndex, int depth, ProgramAction action, CellColor color)
+		private static bool SkipDueToOptimizations(ProgramSlot[] code, int funcIndex, int depth, ProgramAction action, FieldColor color)
 		{
 			// Rotation code optimization
 			if ((action == ProgramAction.Left || action == ProgramAction.Right) && depth > 0)
@@ -186,18 +186,18 @@ namespace RoboZZle
 			// Check if program contains any forward instructions
 			bool forwardInstructionFound = false;
 			foreach (ProgramSlot[] funcCode in programCode)
-				foreach (ProgramSlot programSlot in funcCode)
-				{
-					if (programSlot.Action == ProgramAction.Forward)
-					{
-						forwardInstructionFound = true;
-						break;
-					}
-				}
+			    foreach (ProgramSlot programSlot in funcCode)
+			    {
+			        if (programSlot.Action == ProgramAction.Forward)
+			        {
+			            forwardInstructionFound = true;
+			            break;
+			        }
+			    }
 
 			// Program with no forward instructions is bad
 			if (!forwardInstructionFound)
-				return false;
+			    return false;
 
 			return true;
 		}

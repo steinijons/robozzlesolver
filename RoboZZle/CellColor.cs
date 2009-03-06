@@ -1,6 +1,6 @@
 namespace RoboZZle
 {
-	enum CellColor
+	enum FieldColor
 	{
 		None, Red, Green, Blue
 	}

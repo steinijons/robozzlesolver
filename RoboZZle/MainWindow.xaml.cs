@@ -12,11 +12,6 @@ using Microsoft.Win32;
 
 namespace RoboZZle
 {
-	enum ButtonAction
-	{
-		None, MarkAsRed, MarkAsGreen, MarkAsBlue, MarkAsGray, MarkAsStar, MarkAsStart
-	}
-
 	public partial class MainWindow
 	{
 		private Puzzle puzzle;
@@ -32,20 +27,19 @@ namespace RoboZZle
 		public MainWindow()
 		{
 			this.InitializeComponent();
-			this.CreateFieldAndPuzzle();
 			this.InitializeBackgroundWorker();
 			this.LoadBrushes();
-
-			this.SetStartPosition(0, 0);
-			this.SetStartDirection(1);
+			this.CreateFieldAndPuzzle();
 		}
+
+		#region Initialization
 
 		private void LoadBrushes()
 		{
-			this.redBrush = (Brush) this.FindResource("RedColor");
-			this.greenBrush = (Brush) this.FindResource("GreenColor");
-			this.blueBrush = (Brush) this.FindResource("BlueColor");
-			this.noColorBrush = (Brush) this.FindResource("NoColor");
+			this.redBrush = (Brush)this.FindResource("RedColor");
+			this.greenBrush = (Brush)this.FindResource("GreenColor");
+			this.blueBrush = (Brush)this.FindResource("BlueColor");
+			this.noColorBrush = (Brush)this.FindResource("NoColor");
 		}
 
 		private void InitializeBackgroundWorker()
@@ -59,16 +53,29 @@ namespace RoboZZle
 
 		private void CreateFieldAndPuzzle()
 		{
-			this.puzzle = new Puzzle(FieldSideSize, FieldSideSize);
 			for (int i = 0; i < FieldSideSize; ++i)
 				for (int j = 0; j < FieldSideSize; ++j)
 				{
-					Button button = new Button { Background = Brushes.Gray, Name = string.Format("Field_{0}_{1}", j, i) };
+					Button button = this.FindResource("FieldButton") as Button;
+					Debug.Assert(button != null);
+
+					button.Name = string.Format("Field_{0}_{1}", j, i);
 					button.Click += fieldButton_Click;
 
 					this.fieldGrid.Children.Add(button);
 				}
+
+			this.puzzle = new Puzzle(FieldSideSize, FieldSideSize);
+			this.puzzle.FieldColorChanged += this.puzzle_FieldColorChanged;
+			this.puzzle.FieldStarStateChanged += this.puzzle_FieldStarStateChanged;
+			this.puzzle.StartPositionChanged += this.puzzle_StartPositionChanged;
+			this.puzzle.StartDirectionChanged += this.puzzle_StartDirectionChanged;
+			this.puzzle.Reset();
 		}
+
+		#endregion
+
+		#region Helpers
 
 		private void LoadDescription(string fileName)
 		{
@@ -108,8 +115,8 @@ namespace RoboZZle
 				return;
 			}
 
-			this.Reset();
-			CellColor[] intToColor = new[] { CellColor.None, CellColor.Red, CellColor.Green, CellColor.Blue };
+			FieldColor[] intToColor = new[] { FieldColor.None, FieldColor.Red, FieldColor.Green, FieldColor.Blue };
+			this.puzzle.Reset();
 			for (int y = 0; y < height; ++y)
 			{
 				if (lines[y + 1].Length != width)
@@ -122,65 +129,18 @@ namespace RoboZZle
 				{
 					int number = lines[y + 1][x];
 					bool hasStar = ((number & 4) != 0);
-					CellColor cellColor = intToColor[number & 3];
-					SetColor(x, y, cellColor);
-					SetStar(x, y, hasStar);
+					FieldColor cellColor = intToColor[number & 3];
+
+					Coord coord = new Coord(x, y);
+					this.puzzle.SetColor(coord, cellColor);
+					this.puzzle.SetStar(coord, hasStar);
 				}
 			}
 		}
 
-		#region Field control
-
-		private void SetStartDirection(int direction)
+		private Button FindButtonForCoords(Coord coord)
 		{
-			int x, y;
-			this.puzzle.GetStartPosition(out x, out y);
-			Button button = this.FindButtonForCoords(x, y);
-			Canvas canvas = (Canvas) button.Content;
-			Polygon playerTriangle = (Polygon) canvas.Children[0];
-			
-			double angle = 90 * direction + 180;
-			playerTriangle.RenderTransform = new RotateTransform(angle, 5, 5);
-
-			this.puzzle.SetStartDirection(direction);
-		}
-
-		private void SetStartPosition(int x, int y)
-		{
-			// Reset star state into player position
-			SetStar(x, y, false);
-
-			int oldX, oldY;
-			this.puzzle.GetStartPosition(out oldX, out oldY);
-			this.puzzle.SetStartPosition(x, y);
-
-			if (oldX != -1 && oldY != -1)
-			{
-				Button oldPlayerButton = this.FindButtonForCoords(oldX, oldY);
-				oldPlayerButton.Content = null;
-			}
-
-			Button newPlayerButton = this.FindButtonForCoords(x, y);
-			Canvas canvas = (Canvas) this.FindResource("PlayerTriangleHolder");
-			newPlayerButton.Content = canvas;
-		}
-
-		private void Reset()
-		{
-			SetStartPosition(0, 0);
-			SetStartDirection(0);
-			
-			for (int x = 0; x < FieldSideSize; ++x)
-				for (int y = 0; y < FieldSideSize; ++y)
-				{
-					SetColor(x, y, CellColor.None);
-					SetStar(x, y, false);
-				}
-		}
-
-		private Button FindButtonForCoords(int x, int y)
-		{
-			string nameToFind = string.Format("Field_{0}_{1}", x, y);
+			string nameToFind = string.Format("Field_{0}_{1}", coord.X, coord.Y);
 			Button button = null;
 			foreach (Button childButton in this.fieldGrid.Children)
 			{
@@ -195,51 +155,139 @@ namespace RoboZZle
 			return button;
 		}
 
-		private void SetColor(int x, int y, CellColor color)
+		public Shape FindPlayerTriangleInButton(Button button)
 		{
-			Button button = FindButtonForCoords(x, y);
+			Grid grid = button.Content as Grid;
+			Debug.Assert(grid != null);
 
-			this.puzzle.SetColor(x, y, color);
-			switch (color)
-			{
-				case CellColor.None:
-					button.Background = this.noColorBrush;
-					break;
-				case CellColor.Red:
-					button.Background = this.redBrush;
-					break;
-				case CellColor.Green:
-					button.Background = this.greenBrush;
-					break;
-				case CellColor.Blue:
-					button.Background = this.blueBrush;
-					break;
-			}
+			foreach (UIElement uiElement in grid.Children)
+				if (uiElement is Canvas)
+				{
+					Canvas canvas = uiElement as Canvas;
+					return canvas.Children[0] as Shape;
+				}
+
+			Debug.Fail("Execution should never reach that line!");
+			return null;
 		}
 
-		private void SetStar(int x, int y, bool isStar)
+		public void AddPlayerTriangleToButton(Button button)
 		{
-			// No stars at player position
-			int playerX, playerY;
-			this.puzzle.GetStartPosition(out playerX, out playerY);
-			if (x == playerX && y == playerY)
-				return;
+			Grid grid = button.Content as Grid;
+			Debug.Assert(grid != null);
 
-			Button button = FindButtonForCoords(x, y);
+			Canvas canvas = this.FindResource("PlayerTriangleHolder") as Canvas;
+			Debug.Assert(canvas != null);
+			grid.Children.Add(canvas);
+		}
 
-			this.puzzle.SetStar(x, y, isStar);
-			if (!isStar)
-				button.Content = null;
-			else
-			{
-				Ellipse star = (Ellipse)this.FindResource("Star");
-				button.Content = star;
-			}
+		public void RemovePlayerTriangleFromButton(Button button)
+		{
+			Grid grid = button.Content as Grid;
+			Debug.Assert(grid != null);
+
+			foreach (UIElement uiElement in grid.Children)
+				if (uiElement is Canvas)
+				{
+					grid.Children.Remove(uiElement);
+					return;
+				}
+
+			Debug.Fail("Execution should never reach that line!");
+		}
+
+		public void AddStarToButton(Button button)
+		{
+			Grid grid = button.Content as Grid;
+			Debug.Assert(grid != null);
+
+			Shape star = this.FindResource("Star") as Shape;
+			Debug.Assert(star != null);
+			grid.Children.Insert(0, star);	// Insert into beginning
+		}
+
+		public void RemoveStarFromButton(Button button)
+		{
+			Grid grid = button.Content as Grid;
+			Debug.Assert(grid != null);
+
+			foreach (UIElement uiElement in grid.Children)
+				if (uiElement is Shape)
+				{
+					grid.Children.Remove(uiElement);
+					return;
+				}
+
+			Debug.Fail("Execution should never reach that line!");
 		}
 
 		#endregion
 
 		#region Event handlers
+
+		#region Puzzle changing
+
+		void puzzle_StartDirectionChanged(object sender, StartDirectionChangedEventArgs e)
+		{
+			Button button = this.FindButtonForCoords(this.puzzle.StartPosition);
+			Shape playerTriangle = this.FindPlayerTriangleInButton(button);
+			playerTriangle.RenderTransform = new RotateTransform(90 * e.NewDirection + 180, 5, 5);
+		}
+
+		void puzzle_StartPositionChanged(object sender, StartPositionChangedEventArgs e)
+		{
+			if (e.OldPosition == e.NewPosition)
+				return;
+			
+			if (e.OldPosition.X != -1 && e.OldPosition.Y != -1)
+			{
+				Button oldPlayerButton = this.FindButtonForCoords(e.OldPosition);
+				this.RemovePlayerTriangleFromButton(oldPlayerButton);
+			}
+
+			Button newPlayerButton = this.FindButtonForCoords(e.NewPosition);
+			this.AddPlayerTriangleToButton(newPlayerButton);
+			Shape playerTriangle = this.FindPlayerTriangleInButton(newPlayerButton);
+			playerTriangle.RenderTransform = new RotateTransform(90 * this.puzzle.StartDirection + 180, 5, 5);
+		}
+
+		void puzzle_FieldStarStateChanged(object sender, FieldStarStateChangedEventArgs e)
+		{
+			if (e.OldStarState == e.NewStarState)
+				return;
+			
+			Button button = this.FindButtonForCoords(e.Coord);
+			bool isStar = this.puzzle.GetStar(e.Coord);
+
+			if (!isStar)
+				this.RemoveStarFromButton(button);
+			else
+				this.AddStarToButton(button);
+		}
+
+		void puzzle_FieldColorChanged(object sender, FieldColorChangedEventArgs e)
+		{
+			Button button = this.FindButtonForCoords(e.Coord);
+			FieldColor color = this.puzzle.GetColor(e.Coord);
+
+			switch (color)
+			{
+				case FieldColor.None:
+					button.Background = this.noColorBrush;
+					break;
+				case FieldColor.Red:
+					button.Background = this.redBrush;
+					break;
+				case FieldColor.Green:
+					button.Background = this.greenBrush;
+					break;
+				case FieldColor.Blue:
+					button.Background = this.blueBrush;
+					break;
+			}
+		}
+
+		#endregion
 
 		#region Field editing
 
@@ -275,12 +323,12 @@ namespace RoboZZle
 
 		private void turnLeftButton_Click(object sender, RoutedEventArgs e)
 		{
-			SetStartDirection((puzzle.GetStartDirection() + 3) % 4);
+			this.puzzle.StartDirection = (this.puzzle.StartDirection + 3) % 4;
 		}
 
 		private void rightButton_Click(object sender, RoutedEventArgs e)
 		{
-			SetStartDirection((puzzle.GetStartDirection() + 1) % 4);
+			this.puzzle.StartDirection = (this.puzzle.StartDirection + 1) % 4;
 		}
 
 		private void fieldButton_Click(object sender, RoutedEventArgs e)
@@ -289,26 +337,27 @@ namespace RoboZZle
 			Debug.Assert(button != null);
 			string[] coordsAsString = button.Name.Substring(6).Split('_');
 			int x = Int32.Parse(coordsAsString[0]), y = Int32.Parse(coordsAsString[1]);
+			Coord coord = new Coord(x, y);
 
 			switch (this.lastAction)
 			{
 				case ButtonAction.MarkAsRed:
-					SetColor(x, y, CellColor.Red);
+					this.puzzle.SetColor(coord, FieldColor.Red);
 					break;
 				case ButtonAction.MarkAsGreen:
-					SetColor(x, y, CellColor.Green);
+					this.puzzle.SetColor(coord, FieldColor.Green);
 					break;
 				case ButtonAction.MarkAsBlue:
-					SetColor(x, y, CellColor.Blue);
+					this.puzzle.SetColor(coord, FieldColor.Blue);
 					break;
 				case ButtonAction.MarkAsGray:
-					SetColor(x, y, CellColor.None);
+					this.puzzle.SetColor(coord, FieldColor.None);
 					break;
 				case ButtonAction.MarkAsStar:
-					SetStar(x, y, !this.puzzle.GetStar(x, y));
+					this.puzzle.SetStar(coord, !this.puzzle.GetStar(coord));
 					break;
 				case ButtonAction.MarkAsStart:
-					SetStartPosition(x, y);
+					this.puzzle.StartPosition = coord;
 					break;
 			}
 		}
@@ -361,7 +410,7 @@ namespace RoboZZle
 
 		private void resetButton_Click(object sender, RoutedEventArgs e)
 		{
-			this.Reset();
+			this.puzzle.Reset();
 		}
 
 		private void loadButton_Click(object sender, RoutedEventArgs e)
