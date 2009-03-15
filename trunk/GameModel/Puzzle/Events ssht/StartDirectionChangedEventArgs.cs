@@ -1,8 +1,8 @@
 using System;
 
-namespace RoboZZle
+namespace RoboZZle.GameModel
 {
-	internal class StartDirectionChangedEventArgs : EventArgs
+    public class StartDirectionChangedEventArgs : EventArgs
 	{
 		public int OldDirection { get; private set; }
 		

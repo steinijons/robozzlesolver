@@ -1,8 +1,8 @@
 using System;
 
-namespace RoboZZle
+namespace RoboZZle.GameModel
 {
-	internal class PuzzleFieldChangedEventArgs : EventArgs
+    public class PuzzleFieldChangedEventArgs : EventArgs
 	{
 		public Coord Coord { get; private set; }
 

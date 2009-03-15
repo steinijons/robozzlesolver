@@ -1,8 +1,8 @@
 using System;
 
-namespace RoboZZle
+namespace RoboZZle.GameModel
 {
-	internal class StartPositionChangedEventArgs : EventArgs
+    public class StartPositionChangedEventArgs : EventArgs
 	{
 		public Coord OldPosition { get; private set; }
 		

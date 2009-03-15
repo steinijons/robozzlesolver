@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace RoboZZle
+namespace RoboZZle.GameModel
 {
-	class Program
+    public class Program
 	{
 		private readonly ProgramSlot[][] programCode;
 
