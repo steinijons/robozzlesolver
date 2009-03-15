@@ -1,0 +1,51 @@
+﻿<Window x:Class="RoboZZle.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cm="clr-namespace:System.ComponentModel;assembly=System"
+    Title="RoboZZle solver" Height="511" Width="530" ResizeMode="NoResize">
+    <Window.Resources>
+        <SolidColorBrush x:Key="RedColor" Color="#FF0033"/>
+        <SolidColorBrush x:Key="GreenColor" Color="#33CC33"/>
+        <SolidColorBrush x:Key="BlueColor" Color="#6633CC"/>
+        <SolidColorBrush x:Key="NoColor" Color="Gray"/>
+        <Polygon x:Shared="false" x:Key="PlayerTriangle" Stroke="Black" Fill="Yellow" Points="0,0 5,10 10,0"/>
+        <Ellipse x:Key="Star" x:Shared="false" Stroke="Black" Fill="White" Width="10" Height="10"/>
+        <Canvas x:Shared="false" x:Key="PlayerTriangleHolder" Width="10" Height="10">
+            <StaticResource ResourceKey="PlayerTriangle"/>
+        </Canvas>
+        <Button x:Shared="false" x:Key="FieldButton">
+            <Grid/>
+        </Button>
+        <cm:BackgroundWorker x:Key="BackgroundWorker" WorkerReportsProgress="True" WorkerSupportsCancellation="True" ProgressChanged="worker_ProgressChanged" RunWorkerCompleted="worker_RunWorkerCompleted" DoWork="worker_DoWork"/>
+    </Window.Resources>
+    <Grid>
+        <UniformGrid Margin="12,42.5,0,53.5" Name="fieldGrid" HorizontalAlignment="Left" Width="415" />
+        <StackPanel Margin="13,4,0,0" Name="stackPanel1" VerticalAlignment="Top" Orientation="Horizontal" HorizontalAlignment="Left" Height="30">
+            <Button Name="redButton" Background="{StaticResource RedColor}" Height="30" Click="redButton_Click" Width="30"></Button>
+            <Button Background="{StaticResource GreenColor}" Height="30" Name="greenButton" Click="greenButton_Click" Width="30"></Button>
+            <Button Background="{StaticResource BlueColor}" Height="30" Name="blueButton" Click="blueButton_Click" Width="30"></Button>
+            <Button Background="{StaticResource NoColor}" Height="30" Name="noneButton" Click="noneButton_Click" Width="30"></Button>
+            <Button Height="30" Name="starButton" Click="starButton_Click" Width="30" Content="{StaticResource Star}"/>
+            <Button Height="30" Name="startButton" Click="startButton_Click" Width="30" Content="{StaticResource PlayerTriangleHolder}"/>
+            <Button Name="turnLeftButton" Height="30" Grid.IsSharedSizeScope="False" Width="30" Click="turnLeftButton_Click" FontWeight="Bold">L</Button>
+            <Button Grid.IsSharedSizeScope="False" Height="30" Name="rightButton" Click="rightButton_Click" Width="30" FontWeight="Bold">R</Button>
+        </StackPanel>
+        <TextBox Height="23" HorizontalAlignment="Right" Margin="0,42.5,12,0" Name="func1Slots" VerticalAlignment="Top" Width="33">3</TextBox>
+        <TextBlock Margin="0,45.5,51,0" Name="textBlock2" VerticalAlignment="Top" Text="F1" Height="15.96" HorizontalAlignment="Right" Width="12.33" />
+        <TextBox Height="23" HorizontalAlignment="Right" Margin="0,71.5,12,0" Name="func2Slots" VerticalAlignment="Top" Width="33">0</TextBox>
+        <TextBlock Height="15.96" HorizontalAlignment="Right" Margin="0,74.5,51,0" Name="textBlock3" Text="F2" VerticalAlignment="Top" Width="12.33" />
+        <TextBox Height="23" HorizontalAlignment="Right" Margin="0,100.5,12,0" Name="func3Slots" VerticalAlignment="Top" Width="33">0</TextBox>
+        <TextBlock Height="15.96" HorizontalAlignment="Right" Margin="0,103.5,51,0" Name="textBlock4" Text="F3" VerticalAlignment="Top" Width="12.33" />
+        <TextBox Height="23" HorizontalAlignment="Right" Margin="0,129.5,12,0" Name="func4Slots" VerticalAlignment="Top" Width="33">0</TextBox>
+        <TextBlock Height="15.96" HorizontalAlignment="Right" Margin="0,132.5,51,0" Name="textBlock5" Text="F4" VerticalAlignment="Top" Width="12.33" />
+        <TextBox HorizontalAlignment="Right" Margin="0,158.5,12,0" Name="func5Slots" Width="33" Height="21" VerticalAlignment="Top">0</TextBox>
+        <TextBlock HorizontalAlignment="Right" Margin="0,161.5,52,0" Name="textBlock6" Text="F5" Width="12.33" Height="16" VerticalAlignment="Top" />
+        <TextBlock HorizontalAlignment="Right" Margin="0,10,84,0" Name="iterationsCompletedMessage" Width="131" TextAlignment="Right" Height="21" VerticalAlignment="Top" />
+        <StackPanel Margin="12,0,0,14" Name="stackPanel2" VerticalAlignment="Bottom" Orientation="Horizontal" Height="33" HorizontalAlignment="Left">
+            <Button Height="33" Name="solveButton" Width="100" Click="solveButton_Click" Margin="0,0,5,0">Solve!</Button>
+            <Button Height="33" Name="cancelButton" IsEnabled="False" Click="cancelButton_Click" Width="100" Margin="0,0,5,0">Cancel</Button>
+            <Button Height="33" IsEnabled="True" Name="resetButton" Click="resetButton_Click" Width="100" Margin="0,0,5,0">Reset</Button>
+            <Button Height="33" IsEnabled="True" Name="loadButton" Width="100" Click="loadButton_Click">Load</Button>
+        </StackPanel>
+    </Grid>
+</Window>
