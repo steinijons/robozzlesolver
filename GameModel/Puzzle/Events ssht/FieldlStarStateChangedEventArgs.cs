@@ -1,6 +1,6 @@
-namespace RoboZZle
+namespace RoboZZle.GameModel
 {
-	class FieldStarStateChangedEventArgs : PuzzleFieldChangedEventArgs
+    public class FieldStarStateChangedEventArgs : PuzzleFieldChangedEventArgs
 	{
 		public bool OldStarState { get; private set; }
 

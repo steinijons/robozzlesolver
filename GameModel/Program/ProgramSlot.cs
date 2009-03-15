@@ -1,6 +1,6 @@
-namespace RoboZZle
+namespace RoboZZle.GameModel
 {
-	struct ProgramSlot
+    public struct ProgramSlot
 	{
 		public ProgramAction Action { get; set; }
 

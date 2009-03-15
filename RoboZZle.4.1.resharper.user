@@ -14,45 +14,10 @@
   </NAntValidationSettings>
   <RecentFiles>
     <RecentFiles>
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:ProgramAction.cs" caret="29" scrollPosition="0|0" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:CellColor.cs" caret="29" scrollPosition="0|0" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Program.cs" caret="100" scrollPosition="0|0" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="2102" scrollPosition="0|0" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml.cs" caret="5792" scrollPosition="0|191" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="390" scrollPosition="0|0" />
+      <File id="39CFBB6A-4EB6-450D-9B0F-A0A214DB0F09/d:Puzzle/d:Events ssht/f:StartDirectionChangedEventArgs.cs" caret="82" scrollPosition="0|0" />
+      <File id="39CFBB6A-4EB6-450D-9B0F-A0A214DB0F09/d:Puzzle/f:Puzzle.cs" caret="1015" scrollPosition="0|0" />
     </RecentFiles>
-    <RecentEdits>
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="4765" scrollPosition="0|170" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="513" scrollPosition="0|3" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="245" scrollPosition="0|3" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="601" scrollPosition="0|21" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="880" scrollPosition="0|21" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="1005" scrollPosition="0|52" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="1493" scrollPosition="0|69" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="2310" scrollPosition="0|98" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="2555" scrollPosition="0|98" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="2927" scrollPosition="0|114" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="5354" scrollPosition="0|169" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="4552" scrollPosition="0|169" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:Puzzle.cs" caret="6032" scrollPosition="0|212" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml.cs" caret="1983" scrollPosition="0|45" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="4679" scrollPosition="0|40" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml.cs" caret="4621" scrollPosition="0|119" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml.cs" caret="3922" scrollPosition="0|119" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml.cs" caret="4087" scrollPosition="0|119" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="1643" scrollPosition="0|0" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml.cs" caret="694" scrollPosition="0|5" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml.cs" caret="887" scrollPosition="0|10" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml.cs" caret="1195" scrollPosition="0|17" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml.cs" caret="5792" scrollPosition="0|191" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="390" scrollPosition="0|0" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="1" scrollPosition="0|0" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="923" scrollPosition="0|15" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="3661" scrollPosition="0|36" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="3362" scrollPosition="0|34" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="2324" scrollPosition="0|27" />
-      <File id="29222EEA-E888-498F-913A-D819B52F15AC/f:MainWindow.xaml" caret="3812" scrollPosition="0|37" />
-    </RecentEdits>
+    <RecentEdits />
   </RecentFiles>
   <UnitTestRunner>
     <CustomStartDirectory>
@@ -167,6 +132,9 @@
       <Item value="width" priority="0" />
       <Item value="height" priority="0" />
       <Item value="Brush" priority="0" />
+      <Item value="using" priority="0" />
+      <Item value="RoboZZle" priority="0" />
+      <Item value="GameModel" priority="0" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:@System.IO.File">
       <Item value="Exists" priority="0" />
