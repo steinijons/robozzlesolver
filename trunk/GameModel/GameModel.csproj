@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AForge.Genetic, Version=2.0.0.0, Culture=neutral, PublicKeyToken=4336634eeb41b69b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\AForge.NET Framework\Release\AForge.Genetic.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -45,18 +49,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Puzzle\Coord.cs" />
-    <Compile Include="Puzzle\FieldColor.cs" />
-    <Compile Include="Puzzle\Events ssht\FieldlColorStateChangedEventArgs.cs" />
-    <Compile Include="Puzzle\Events ssht\FieldlStarStateChangedEventArgs.cs" />
-    <Compile Include="Program\Program.cs" />
-    <Compile Include="Program\ProgramAction.cs" />
-    <Compile Include="Program\ProgramSlot.cs" />
+    <Compile Include="Coord.cs" />
+    <Compile Include="FieldColor.cs" />
+    <Compile Include="FieldColorChangedEventArgs.cs" />
+    <Compile Include="FieldStarStateChangedEventArgs.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="ProgramAction.cs" />
+    <Compile Include="ProgramChromosome.cs" />
+    <Compile Include="ProgramExecutionResult.cs" />
+    <Compile Include="ProgramFitnessFunction.cs" />
+    <Compile Include="ProgramSlot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Puzzle\Puzzle.cs" />
-    <Compile Include="Puzzle\Events ssht\PuzzleFieldChangedEventArgs.cs" />
-    <Compile Include="Puzzle\Events ssht\StartDirectionChangedEventArgs.cs" />
-    <Compile Include="Puzzle\Events ssht\StartPositionChangedEventArgs.cs" />
+    <Compile Include="Puzzle.cs" />
+    <Compile Include="PuzzleFieldChangedEventArgs.cs" />
+    <Compile Include="StartDirectionChangedEventArgs.cs" />
+    <Compile Include="StartPositionChangedEventArgs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
