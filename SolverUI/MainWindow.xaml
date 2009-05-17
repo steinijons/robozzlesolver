@@ -16,7 +16,7 @@
         <Button x:Shared="false" x:Key="FieldButton">
             <Grid/>
         </Button>
-        <cm:BackgroundWorker x:Key="BackgroundWorker" WorkerReportsProgress="True" WorkerSupportsCancellation="True" ProgressChanged="worker_ProgressChanged" RunWorkerCompleted="worker_RunWorkerCompleted" DoWork="worker_DoWork"/>
+        <cm:BackgroundWorker x:Key="BackgroundWorker" WorkerReportsProgress="True" WorkerSupportsCancellation="True" ProgressChanged="OnWorkerProgressChanged" RunWorkerCompleted="OnWorkerRunWorkerCompleted"/>
     </Window.Resources>
     <Grid>
         <UniformGrid Margin="12,42.5,0,53.5" Name="fieldGrid" HorizontalAlignment="Left" Width="415" />
@@ -42,10 +42,11 @@
         <TextBlock HorizontalAlignment="Right" Margin="0,161.5,52,0" Name="textBlock6" Text="F5" Width="12.33" Height="16" VerticalAlignment="Top" />
         <TextBlock HorizontalAlignment="Right" Margin="0,10,84,0" Name="iterationsCompletedMessage" Width="131" TextAlignment="Right" Height="21" VerticalAlignment="Top" />
         <StackPanel Margin="12,0,0,14" Name="stackPanel2" VerticalAlignment="Bottom" Orientation="Horizontal" Height="33" HorizontalAlignment="Left">
-            <Button Height="33" Name="solveButton" Width="100" Click="solveButton_Click" Margin="0,0,5,0">Solve!</Button>
-            <Button Height="33" Name="cancelButton" IsEnabled="False" Click="cancelButton_Click" Width="100" Margin="0,0,5,0">Cancel</Button>
-            <Button Height="33" IsEnabled="True" Name="resetButton" Click="resetButton_Click" Width="100" Margin="0,0,5,0">Reset</Button>
-            <Button Height="33" IsEnabled="True" Name="loadButton" Width="100" Click="loadButton_Click">Load</Button>
+            <Button Height="33" Name="solveBruteForceButton" Width="80" Click="OnSolveBruteForceButtonClick" Margin="0,0,5,0">Brute force!</Button>
+            <Button Height="33" Name="solveEvolutionaryButton" Width="80" Click="OnSolveEvolutionaryButtonClick" Margin="0,0,5,0">Evolution!</Button>
+            <Button Height="33" Name="cancelButton" IsEnabled="False" Click="OnCancelButtonClick" Width="80" Margin="0,0,5,0">Cancel</Button>
+            <Button Height="33" IsEnabled="True" Name="resetButton" Click="OnResetButtonClick" Width="80" Margin="0,0,5,0">Reset</Button>
+            <Button Height="33" IsEnabled="True" Name="loadButton" Width="80" Click="OnLoadButtonClick">Load</Button>
         </StackPanel>
     </Grid>
 </Window>

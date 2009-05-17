@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 using RoboZZle.GameModel;
+using AForge.Genetic;
 
 namespace RoboZZle
 {
@@ -53,7 +55,7 @@ namespace RoboZZle
 
 		private void LoadBackgroundWorker()
 		{
-			this.backgroundWorker = (BackgroundWorker) this.FindResource("BackgroundWorker");
+			this.backgroundWorker = (BackgroundWorker)this.FindResource("BackgroundWorker");
 		}
 
 		private void CreateFieldAndPuzzle()
@@ -81,6 +83,56 @@ namespace RoboZZle
 		#endregion
 
 		#region Helpers
+
+		private void RunSolving()
+		{
+			bool parseResult = true;
+			int n1, n2, n3, n4, n5;
+			parseResult &= Int32.TryParse(this.func1Slots.Text, out n1);
+			parseResult &= Int32.TryParse(this.func2Slots.Text, out n2);
+			parseResult &= Int32.TryParse(this.func3Slots.Text, out n3);
+			parseResult &= Int32.TryParse(this.func4Slots.Text, out n4);
+			parseResult &= Int32.TryParse(this.func5Slots.Text, out n5);
+			if (!parseResult || n1 < 1 || n2 < 0 || n3 < 0 || n4 < 0 || n5 < 0)
+			{
+				MessageBox.Show("Given function slot descriptions are not correct.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
+			if (!this.puzzle.IsInValidConfiguration())
+			{
+				MessageBox.Show("Puzzle configuration is not yet valid.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
+			int redCount, greenCount, blueCount;
+			this.puzzle.GetColorsCount(out redCount, out greenCount, out blueCount);
+			bool useRed = redCount > 0, useGreen = greenCount > 0, useBlue = blueCount > 0;
+			if ((redCount == 0 && greenCount == 0) || (redCount == 0 && blueCount == 0) || (greenCount == 0 && blueCount == 0))
+				useRed = useGreen = useBlue = false;
+
+			int funcCount = (n1 > 0 ? 1 : 0) + (n2 > 0 ? 1 : 0) + (n3 > 0 ? 1 : 0) + (n4 > 0 ? 1 : 0) + (n5 > 0 ? 1 : 0);
+			int slotsCount = n1 + n2 + n3 + n4 + n5;
+			int colorsCount = 1 + (useRed ? 1 : 0) + (useGreen ? 1 : 0) + (useBlue ? 1 : 0);
+			if (Math.Pow((3 + funcCount) * colorsCount, slotsCount) > 500000000)
+				MessageBox.Show(
+					"Note that solving puzzle with that configuration can take a lot of time.",
+					"Warning!",
+					MessageBoxButton.OK,
+					MessageBoxImage.Warning);
+
+			this.solveBruteForceButton.IsEnabled = false;
+			this.solveEvolutionaryButton.IsEnabled = false;
+			this.resetButton.IsEnabled = false;
+			this.loadButton.IsEnabled = false;
+			this.cancelButton.IsEnabled = true;
+			this.isSolvingNow = true;
+
+			List<int> slotSizes = new List<int> { n1, n2, n3, n4, n5 };
+			slotSizes.RemoveAll(size => size == 0);
+
+			this.backgroundWorker.RunWorkerAsync(new ArrayList { useRed, useGreen, useBlue, slotSizes });
+		}
 
 		private void LoadDescription(string fileName)
 		{
@@ -158,6 +210,12 @@ namespace RoboZZle
 
 			Debug.Assert(button != null);
 			return button;
+		}
+
+		private void ResetSolvingHandler()
+		{
+			this.backgroundWorker.DoWork -= this.OnWorkerDoWorkEvolutionary;
+			this.backgroundWorker.DoWork -= this.OnWorkerDoWorkBruteForce;
 		}
 
 		public Shape FindPlayerTriangleInButton(Button button)
@@ -338,7 +396,7 @@ namespace RoboZZle
 		{
 			if (this.isSolvingNow)
 				return;
-			
+
 			this.puzzle.StartDirection = (this.puzzle.StartDirection + 1) % 4;
 		}
 
@@ -346,7 +404,7 @@ namespace RoboZZle
 		{
 			if (this.isSolvingNow)
 				return;
-			
+
 			Button button = e.Source as Button;
 			Debug.Assert(button != null);
 			string[] coordsAsString = button.Name.Substring(6).Split('_');
@@ -380,65 +438,31 @@ namespace RoboZZle
 
 		#region Main operations
 
-		private void solveButton_Click(object sender, RoutedEventArgs e)
+		private void OnSolveBruteForceButtonClick(object sender, RoutedEventArgs e)
 		{
-			bool parseResult = true;
-			int n1, n2, n3, n4, n5;
-			parseResult &= Int32.TryParse(this.func1Slots.Text, out n1);
-			parseResult &= Int32.TryParse(this.func2Slots.Text, out n2);
-			parseResult &= Int32.TryParse(this.func3Slots.Text, out n3);
-			parseResult &= Int32.TryParse(this.func4Slots.Text, out n4);
-			parseResult &= Int32.TryParse(this.func5Slots.Text, out n5);
-			if (!parseResult || n1 < 1 || n2 < 0 || n3 < 0 || n4 < 0 || n5 < 0)
-			{
-				MessageBox.Show("Given function slot descriptions are not correct.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
-				return;
-			}
-
-			if (!this.puzzle.IsInValidConfiguration())
-			{
-				MessageBox.Show("Puzzle configuration is not yet valid.", "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
-				return;
-			}
-
-			int redCount, greenCount, blueCount;
-			this.puzzle.GetColorsCount(out redCount, out greenCount, out blueCount);
-			bool useRed = redCount > 0, useGreen = greenCount > 0, useBlue = blueCount > 0;
-			if ((redCount == 0 && greenCount == 0) || (redCount == 0 && blueCount == 0) || (greenCount == 0 && blueCount == 0))
-				useRed = useGreen = useBlue = false;
-
-			int funcCount = (n1 > 0 ? 1 : 0) + (n2 > 0 ? 1 : 0) + (n3 > 0 ? 1 : 0) + (n4 > 0 ? 1 : 0) + (n5 > 0 ? 1 : 0);
-			int slotsCount = n1 + n2 + n3 + n4 + n5;
-			int colorsCount = 1 + (useRed ? 1 : 0) + (useGreen ? 1 : 0) + (useBlue ? 1 : 0);
-			if (Math.Pow((3 + funcCount) * colorsCount, slotsCount) > 500000000)
-				MessageBox.Show(
-					"Note that solving puzzle with that configuration can take a lot of time.",
-					"Warning!",
-					MessageBoxButton.OK,
-					MessageBoxImage.Warning);
-
-			this.solveButton.IsEnabled = false;
-			this.resetButton.IsEnabled = false;
-			this.loadButton.IsEnabled = false;
-			this.cancelButton.IsEnabled = true;
-			this.isSolvingNow = true;
-
-			List<int> slotSizes = new List<int> { n1, n2, n3, n4, n5 };
-			slotSizes.RemoveAll(size => size == 0);
-			this.backgroundWorker.RunWorkerAsync(new ArrayList { useRed, useGreen, useBlue, slotSizes });
+			this.ResetSolvingHandler();
+			this.backgroundWorker.DoWork += this.OnWorkerDoWorkBruteForce;
+			this.RunSolving();
 		}
 
-		private void cancelButton_Click(object sender, RoutedEventArgs e)
+		private void OnSolveEvolutionaryButtonClick(object sender, RoutedEventArgs e)
+		{
+			this.ResetSolvingHandler();
+			this.backgroundWorker.DoWork += this.OnWorkerDoWorkEvolutionary;
+			this.RunSolving();
+		}
+
+		private void OnCancelButtonClick(object sender, RoutedEventArgs e)
 		{
 			this.backgroundWorker.CancelAsync();
 		}
 
-		private void resetButton_Click(object sender, RoutedEventArgs e)
+		private void OnResetButtonClick(object sender, RoutedEventArgs e)
 		{
 			this.puzzle.Reset();
 		}
 
-		private void loadButton_Click(object sender, RoutedEventArgs e)
+		private void OnLoadButtonClick(object sender, RoutedEventArgs e)
 		{
 			OpenFileDialog dialog = new OpenFileDialog();
 			if (dialog.ShowDialog() != true)
@@ -451,7 +475,7 @@ namespace RoboZZle
 
 		#region Background worker
 
-		private void worker_DoWork(object sender, DoWorkEventArgs e)
+		private void OnWorkerDoWorkBruteForce(object sender, DoWorkEventArgs e)
 		{
 			ArrayList parameters = e.Argument as ArrayList;
 			Debug.Assert(parameters != null);
@@ -464,7 +488,7 @@ namespace RoboZZle
 				program =>
 				{
 					iterations += 1;
-					if (iterations % 10000 == 0)
+					if (iterations % 10000 == 1)
 						backgroundWorker.ReportProgress(iterations);
 
 					if (this.puzzle.CanBeSolvedWith(program))
@@ -483,7 +507,45 @@ namespace RoboZZle
 				});
 		}
 
-		private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		private void OnWorkerDoWorkEvolutionary(object sender, DoWorkEventArgs e)
+		{
+			ArrayList parameters = e.Argument as ArrayList;
+			Debug.Assert(parameters != null);
+			bool useRed = (bool)parameters[0], useGreen = (bool)parameters[1], useBlue = (bool)parameters[2];
+			List<int> slotSizes = (List<int>)parameters[3];
+
+			ProgramFitnessFunction fitnessFunction = new ProgramFitnessFunction(this.puzzle, slotSizes);
+			ISelectionMethod selectionMethod = new EliteSelection();
+			const int PopulationSize = 500;
+			Population population = new Population(
+				PopulationSize,
+				new ProgramChromosome(slotSizes.Sum(), slotSizes.Count, useRed, useGreen, useBlue),
+				fitnessFunction,
+				selectionMethod);
+
+			int iteration = 0;
+			population.MutationRate = 0.6;
+			population.CrossoverRate = 0.6;
+			while (true)
+			{
+				population.RunEpoch();
+				backgroundWorker.ReportProgress(++iteration, population.FitnessMax - 1);
+
+				if (backgroundWorker.CancellationPending)
+				{
+					e.Cancel = true;
+					return;
+				}
+
+				if (population.FitnessMax - 1 == this.puzzle.StarsCount)
+				{
+					e.Result = fitnessFunction.ChromosomeToProgram((ProgramChromosome)population.BestChromosome);
+					return;
+				}
+			}
+		}
+
+		private void OnWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			if (e.Cancelled)
 				MessageBox.Show("No solution found because you have stopped solver.", "No solution found!", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -492,16 +554,20 @@ namespace RoboZZle
 			else
 				MessageBox.Show(e.Result.ToString(), "Solution found!", MessageBoxButton.OK, MessageBoxImage.Information);
 
-			this.solveButton.IsEnabled = true;
+			this.solveBruteForceButton.IsEnabled = true;
+			this.solveEvolutionaryButton.IsEnabled = true;
 			this.resetButton.IsEnabled = true;
 			this.loadButton.IsEnabled = true;
 			this.cancelButton.IsEnabled = false;
 			this.isSolvingNow = false;
 		}
 
-		private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+		private void OnWorkerProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
-			this.iterationsCompletedMessage.Text = string.Format("{0} iterations", e.ProgressPercentage);
+			this.iterationsCompletedMessage.Text = e.UserState != null
+			                                       	? string.Format("{0} iterations, {1} stars", e.ProgressPercentage,
+			                                       	                e.UserState)
+			                                       	: string.Format("{0} iterations", e.ProgressPercentage);
 		}
 
 		#endregion
