@@ -1,0 +1,5 @@
+[RoboZZle](http://RoboZZle.com) is a set of puzzles where you should develop programs for a small robot to help it collect all the stars on the puzzle field using specialized programming language. Robot control language is very simple, but with instruction count limited and recursion allowed puzzles become very challenging.
+
+Small amount of instructions and program length limit make it possible to construct an automatic solver for puzzles based on backtracking. The purpose of this project is to develop application for automatic puzzle solving and all the necessary tools to convert puzzle screenshots into internal program representation.
+
+![http://3.bp.blogspot.com/_d8HbKgZ8Edw/Sg_qnO-Vf0I/AAAAAAAAACY/Nt-_lESYbwc/s400/solver.jpg](http://3.bp.blogspot.com/_d8HbKgZ8Edw/Sg_qnO-Vf0I/AAAAAAAAACY/Nt-_lESYbwc/s400/solver.jpg)
